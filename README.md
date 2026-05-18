@@ -1,1 +1,1 @@
-https://dinojump.pages.dev/#【サイトのURL】
+https://dinojump.pages.dev#【サイトのURL】
