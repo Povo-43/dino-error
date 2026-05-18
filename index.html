@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インターネットに接続されていません</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #5f6368;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .main-frame {
+            max-width: 600px;
+            width: 100%;
+            padding: 0 40px;
+            box-sizing: border-box;
+            margin-top: -10vh;
+        }
+
+        .dino {
+            width: 44px;
+            height: 47px;
+            background-image: url('https://static.wikia.nocookie.net/creatures-tycoon/images/e/e3/Chrome_Dino.png/revision/latest?cb=20220325131021');
+            background-size: 44px 47px;
+            background-repeat: no-repeat;
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+
+        .dino.jump {
+            animation: chrome-jump 0.55s cubic-bezier(0.215, 0.610, 0.355, 1);
+        }
+
+        @keyframes chrome-jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-50px); }
+            100% { transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 400;
+            color: #202124;
+            margin: 0 0 16px 0;
+            line-height: 28px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 20px;
+            margin: 0 0 24px 0;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0 0 32px 0;
+        }
+
+        li {
+            font-size: 14px;
+            line-height: 22px;
+            margin-bottom: 4px;
+        }
+
+        .error-code {
+            font-size: 12px;
+            color: #70757a;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-frame">
+    <div class="dino" id="dino"></div>
+
+    <h1>インターネットに接続されていません</h1>
+    
+    <p>次を試してください：</p>
+
+    <ul>
+        <li>ネットワーク ケーブル、モデム、ルーターを確認する</li>
+        <li>Wi-Fi に再接続してみる</li>
+        <li>恐竜を満足させる</li>
+    </ul>
+
+    <div class="error-code" id="errorCode">ERR_INTERNET_DISCONNECTED</div>
+</div>
+
+<script>
+    const dino = document.getElementById('dino');
+    const errorCode = document.getElementById('errorCode');
+    let jumpCount = 0;
+
+    dino.addEventListener('click', () => {
+        if (!dino.classList.contains('jump')) {
+            dino.classList.add('jump');
+            jumpCount++;
+
+            if (jumpCount === 1) {
+                errorCode.textContent = "ERR_DINO_TAP_SUCCESSFUL";
+            } else if (jumpCount === 3) {
+                errorCode.textContent = "ERR_MORE_JUMPS_REQUIRED";
+            } else if (jumpCount === 7) {
+                errorCode.textContent = "ERR_UNHAPPY_DINO";
+            } else if (jumpCount === 12) {
+                errorCode.textContent = "ERR_DINO_IS_HAPPY";
+            } else if (jumpCount === 14){
+                errorCode.textContent = "REDIRECTING_NOW";
+                const hash = window.location.hash;
+                if (hash) {
+                    const targetUrl = hash.substring(1);
+                    if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+                        window.location.href = targetUrl;
+                    } else {
+                        console.error("無効なURLです。");
+                    }
+                } else {
+                    console.error("リダイレクト先のURLが指定されていません。");
+                }
+                jumpCount = 0;
+            }
+
+            setTimeout(() => {
+                dino.classList.remove('jump');
+            }, 550);
+        }
+    });
+</script>
+
+</body>
+</html>
