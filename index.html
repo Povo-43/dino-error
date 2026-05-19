@@ -120,7 +120,8 @@
     const errorCode = document.getElementById('errorCode');
     let jumpCount = 0;
 
-    dino.addEventListener('click', () => {
+    // メインのジャンプ処理関数
+    function triggerJump() {
         if (!dino.classList.contains('jump')) {
             dino.classList.add('jump');
             jumpCount++;
@@ -153,8 +154,20 @@
                 dino.classList.remove('jump');
             }, 550);
         }
+    }
+
+    // 1. 恐竜のクリックイベント
+    dino.addEventListener('click', triggerJump);
+
+    // 2. キーボード（スペースキー）のイベント
+    window.addEventListener('keydown', (event) => {
+        // ' ' はスペースキーを表します
+        if (event.key === ' ' || event.code === 'Space') {
+            // スペースキーによる画面スクロールを防止
+            event.preventDefault(); 
+            triggerJump();
+        }
     });
 </script>
-
 </body>
 </html>
